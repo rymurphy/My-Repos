@@ -1,7 +1,5 @@
 object NinetyNine {
-  //HelperFuction from Scala Exercises for Beginners by Tony Morris
-  def succ(n: Int) = n + 1
-  def pred(n: Int) = n - 1
+
   //P01
   def last[A](x:List[A]): A ={
    x match{
@@ -42,8 +40,8 @@ object NinetyNine {
     lyst == lyst.reverse
   }
   //P07
-  def flatten(lyst: List[Any]): List[Any] = lyst{
-    flatMap{
+  def flatten(lyst: List[Any]): List[Any] = {
+    lyst flatMap{
       case x: List[_] => flatten(x)
       case y => List(y)
     }
@@ -51,4 +49,12 @@ object NinetyNine {
   //P08
   def compress
 
+  //P14
+  def duplicate[A](lyst: List[A]): List[A] = {
+    lyst flatMap{x => List(x, x)}
+  }
+  //P15
+  def duplicateN[A](num: Int, lyst: List[A]): List[A] = {
+    lyst flatMap{x => List.fill(num)(x)}
+  }
 }
