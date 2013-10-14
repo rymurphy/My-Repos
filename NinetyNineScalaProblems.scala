@@ -59,6 +59,17 @@ object NinetyNine {
   def duplicateN[A](num: Int, lyst: List[A]): List[A] = {
     lyst flatMap{x => List.fill(num)(x)}
   }
+  //P17
+  def split[A](loc: Int, lyst: List[A]): (List[A], List[A])={
+    (loc, lyst) match{
+      case (0, tail) => (Nil, tail)
+      case (num, head :: tail) ={
+        val(lyst1, lyst2) = split(num-1, tail)
+        (head :: lyst1, lyst2)
+      }
+      case (_, Nil) => (Nil, Nil)
+    }
+  }
   //P20
   def removeAt[A](num: Int, lyst: List[A]): (List[A], A)={
     lyst.splitAt(num) match{
@@ -79,11 +90,13 @@ object NinetyNine {
   }
   //P23
   def randomSelect[A](num: Int, lyst: List[A]): List[A] ={
-   if (num <= 0) Nil
-   else{
-     val (remdr, elmn) = removeAt(Random.nextInt(lyst.length), lyst)
-     elmn :: randomSelect(num-1, remdr)
-   }
+    num match{
+      case 0 => Nil
+      case _ => {
+        val (remdr, elmn) = removeAt(Random.nextInt(lyst.length), lyst)
+        elmn :: randomSelect(num-1, remdr)
+      }
+    }
   }
   //P24
   def lotto(lenOfLyst: Int, upperBound: Int): List[Int] ={
