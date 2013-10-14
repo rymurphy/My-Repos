@@ -1,3 +1,5 @@
+import scala.util.Random
+
 object NinetyNine {
 
   //P01
@@ -35,7 +37,7 @@ object NinetyNine {
       case x :: tail => reverse(tail) ::: List(x)
     }
   }
-  //P06 -I couldn't figure out this one so I checked the answer, and they had was a builtin.
+  //P06
   def isPalindrome[A](lyst: List[A]):Boolean ={
     lyst == lyst.reverse
   }
@@ -56,5 +58,42 @@ object NinetyNine {
   //P15
   def duplicateN[A](num: Int, lyst: List[A]): List[A] = {
     lyst flatMap{x => List.fill(num)(x)}
+  }
+  //P20
+  def removeAt[A](num: Int, lyst: List[A]): (List[A], A)={
+    lyst.splitAt(num) match{
+      case (alpha, bravo :: tail) => (alpha ::: tail, bravo)
+      case (_, Nil) => throw new NoSuchElementException
+    }
+  }
+  //P21
+  def insertAt[A](inpt: A, loc: Int, lyst: List[A]): List[A] = {
+    lyst.splitAt(loc) match{
+      case (head, tail) => head ::: input :: tail
+    }
+  }
+  //P22
+  def range(strt: Int, end: Int): List[Int] ={
+    if (strt > end) Nil
+    else strt :: range(strt +1, end)
+  }
+  //P23
+  def randomSelect[A](num: Int, lyst: List[A]): List[A] ={
+   if (num <= 0) Nil
+   else{
+     val (remdr, elmn) = removeAt(Random.nextInt(lyst.length), lyst)
+     elmn :: randomSelect(num-1, remdr)
+   }
+  }
+  //P24
+  def lotto(lenOfLyst: Int, upperBound: Int): List[Int] ={
+    lenOfLyst match{
+      case 0 => Nil
+      case _ => Random.nextInt(upperBound) :: lotto(lenOfLyst-1, upperBound)
+    }
+  }
+  //P25
+  def randomPermutate[A](lyst: List[A]): List[A] ={
+    randomSelect(lyst.length, lyst)
   }
 }
