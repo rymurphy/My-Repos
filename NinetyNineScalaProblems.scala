@@ -3,17 +3,17 @@ import scala.util.Random
 object NinetyNine {
 
   //P01
-  def last[A](x:List[A]): A ={
-   x match{
-     case t :: Nil => t
-     case _ :: lyst => last(lyst)
+  def last[A](lyst: List[A]): A ={
+   lyst match{
+     case ans :: Nil => ans
+     case _ :: tail => last(tail)
    }
   }
   //P02
-  def penultimate[A](x: List[A]): ={
-    x match{
-      case s :: t :: Nil => s
-      case _ :: lyst => penultimate(lyst)
+  def penultimate[A](lyst: List[A]): ={
+    lyst match{
+      case ans :: tail :: Nil => ans
+      case _ :: tail => penultimate(tail)
     }
   //P03
   def nth[A](pos: Int, lyst: List[A]): A ={
@@ -59,6 +59,13 @@ object NinetyNine {
   def duplicateN[A](num: Int, lyst: List[A]): List[A] = {
     lyst flatMap{x => List.fill(num)(x)}
   }
+  //P16
+  def drop[A](loc: Int, lyst: List[A]): List[A] ={
+    def dropHelper[A](helpLoc: Int, helpLyst: List[A]) ={
+      (helpLoc, helpLyst) match{
+        case (_, Nil) => Nil
+        case (1, _ :: tail) => dropHelper(loc, tail)
+        case (_, head :: tail)}}}
   //P17
   def split[A](loc: Int, lyst: List[A]): (List[A], List[A])={
     (loc, lyst) match{
@@ -70,9 +77,24 @@ object NinetyNine {
       case (_, Nil) => (Nil, Nil)
     }
   }
+  //P18
+  def slice[A](strt: Int, end: Int, lyst: List[A]): List[A] ={
+    (strt, end, lyst) match{
+      case (0, 0, list) => Nil
+      case (_, _, Nil) => Nil
+      case (0, ed, head :: tail) => head :: slice(0, ed -1, tail)
+      case (st, ed, head :: tail) => slice(st -1, ed -1, tail)
+    }
+  }
+  //P19
+  def rotate[A](loc: Int, lyst: List[A]): List[A] ={
+    val splitPoint = if(lyst.nonEmpty) loc % lyst.length else 0
+    val (oldHead, oldTail) = lyst.splitAt(if(splitPoint < 0) lyst.length + splitPoint else splitPoint)
+    oldTail ::: oldHead
+  }
   //P20
   def removeAt[A](num: Int, lyst: List[A]): (List[A], A)={
-    lyst.splitAt(num) match{
+    split(num, lyst) match{
       case (alpha, bravo :: tail) => (alpha ::: tail, bravo)
       case (_, Nil) => throw new NoSuchElementException
     }
