@@ -49,15 +49,47 @@ object NinetyNine {
     }
   }
   //P08
-  def compress
-
+  def compress[A](lyst: List[A]): List[A] ={
+    lyst match{
+      case Nil => Nil
+      case _ => lyst.head :: compress(lyst.filter(_ != lyst.head))
+    }
+  }
+  //P09
+  def pack[A](lyst: List[A]): List[List[A]] ={
+    lyst match{
+      case Nil => Nil
+      case _ => lyst.takeWhile(_ == lyst.head) :: pack(lyst.filter(_ != lyst.head))
+    }
+  }
+  //P10
+  def encode[A](lyst: list[A]): List[(Int, A)] ={
+    pack(lyst).map{x => (x.length, x. head)}
+  }
+  //P11
+  def encodeModified[A](lyst: List[A]): List[Any] ={
+    pack(lyst).map{x => if (x.length ==1) x.head else (x.length, x.head)}
+  }
+  //P12
+  def decode[A](lyst: List[(Int, A)]): List[A] ={
+    lyst.flatMap{x => List.fill(x._1)(x._2)}
+  }
+  //P13
+  def encodeDirect[A](lyst: List[A]): List[(Int,A)] ={
+    lyst match{
+      case Nil => Nil
+      case _ => { val sorted = lyst.span(_ == lyst.head)
+                  (sorted._1.length, lyst.head) :: encodeDirect(sort._2)
+      }
+    }
+  }
   //P14
   def duplicate[A](lyst: List[A]): List[A] = {
-    lyst flatMap{x => List(x, x)}
+    lyst.flatMap{x => List(x, x)}
   }
   //P15
   def duplicateN[A](num: Int, lyst: List[A]): List[A] = {
-    lyst flatMap{x => List.fill(num)(x)}
+    lyst.flatMap{x => List.fill(num)(x)}
   }
   //P16
   def drop[A](loc: Int, lyst: List[A]): List[A] ={
